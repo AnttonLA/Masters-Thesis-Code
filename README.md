@@ -41,37 +41,37 @@ Genotype data was expanded upon for the SNP rs699585 in the hopes that the incre
 
 ###### STEP1 - Install BGEN, to get 'cat-bgen'. Needed to merge all BGEN files into one.
 
- #Dowload
-wget http://code.enkre.net/bgen/tarball/release/bgen.tgz
-
- #Un-tar
-tar -xvzf bgen.tgz
-
- #Compile it
-cd bgen
-./waf configure
-./waf
-
- #Test it
-./build/test/unit/test_bgen
-./build/apps/bgenix -g example/example.16bits.bgen -list
-
- #Install apps
-./waf configure --prefix=/path/to/installation/directory
-./waf install
+     #Dowload
+    wget http://code.enkre.net/bgen/tarball/release/bgen.tgz
+    
+     #Un-tar
+    tar -xvzf bgen.tgz
+    
+     #Compile it
+    cd bgen
+    ./waf configure
+    ./waf
+    
+     #Test it
+    ./build/test/unit/test_bgen
+    ./build/apps/bgenix -g example/example.16bits.bgen -list
+    
+     #Install apps
+    ./waf configure --prefix=/path/to/installation/directory
+    ./waf install
 
 ###### STEP 2 - Merge all BGEN files using 'cat-bgen'. Needed to be able to do PCA in PLINK2
 
-cat-bgen -g file1.bgen [file2.bgen...] -og concatenated.bgen  # In my case: 'cat-bgen -g $(cat mergelist.txt) -og merged.bgen',   where mergelist.txt contains the names of all .bgen files in order.
-
- #Index the merged BGEN file using 'bgenix'
- 
-bgenix -g merged.bgen -index
-bgenix -g merged.bgen > merged_sorted.bgen
+    cat-bgen -g file1.bgen [file2.bgen...] -og concatenated.bgen  # In my case: 'cat-bgen -g $(cat mergelist.txt) -og merged.bgen',   where mergelist.txt contains the names of all .bgen files in order.
+    
+     #Index the merged BGEN file using 'bgenix'
+     
+    bgenix -g merged.bgen -index
+    bgenix -g merged.bgen > merged_sorted.bgen
 
 ###### STEP 3 - Do PCA in Plink2, filtering for MAF and HWE and IBD?
 
-plink --make-rel --bgen "/home/antton/TFM/PCA_for_GWAS/bgens/concatenated_sorted.bgen" --sample "/home/antton/TFM/PCA_for_GWAS/Sweden_CordBlood_wAliases_201130_ID2first(CATEGORICAL_VARIABLES).sample" --missing-code -9,NA --maf 0.05 --hwe 1e-6  --indep-pairwise 1000 0.3 --pca 20 --out sorted_merged_PCA 
+    plink --make-rel --bgen "/home/antton/TFM/PCA_for_GWAS/bgens/concatenated_sorted.bgen" --sample "/home/antton/TFM/PCA_for_GWAS/Sweden_CordBlood_wAliases_201130_ID2first(CATEGORICAL_VARIABLES).sample" --missing-code -9,NA --maf 0.05 --hwe 1e-6  --indep-pairwise 1000 0.3 --pca 20 --out sorted_merged_PCA 
 
 ### Explore PCs, MANUALLY remove outliers and perform GWAS
 
